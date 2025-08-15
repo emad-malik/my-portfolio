@@ -29,10 +29,17 @@ const Contact = () => {
     setLoading(true);
 
     try {
+      const formData = new FormData();
+      formData.append('name', form.name);
+      formData.append('email', form.email);
+      formData.append('message', form.message);
+
       const res = await fetch(FORMSPREE_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
       });
 
       if (res.ok) {

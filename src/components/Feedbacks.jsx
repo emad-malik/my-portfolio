@@ -4,12 +4,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
-import { testimonials } from "../constants";
+import { certifications } from "../constants";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
-const FeedbackCard = ({ index, testimonial, name, designation, company, image, linkedin }) => {
+const CertificationCard = ({ index, name, url }) => {
   // Use a `ref` to apply GSAP animations
   const cardRef = React.useRef(null);
 
@@ -40,36 +40,26 @@ const FeedbackCard = ({ index, testimonial, name, designation, company, image, l
   return (
     <div
       ref={cardRef}
-      className="bg-black-200 p-10 rounded-3xl xs:w-[320px] w-full"
+      className="bg-black-200 p-10 rounded-3xl xs:w-[320px] w-full hover:bg-black-300 transition-colors duration-300"
     >
-      <p className="text-white font-black text-[48px]">"</p>
+      <div className="text-center">
+        <div className="text-[#915EFF] text-4xl mb-4">
+          🏆
+        </div>
 
-      <div className="mt-1">
-        <p className="text-white tracking-wider text-[18px]">{testimonial}</p>
+        <div className="mt-1">
+          <h3 className="text-white font-bold text-[20px] mb-4">{name}</h3>
 
-        <div className="mt-7 flex justify-between items-center gap-1">
-          <div className="flex-1 flex flex-col">
-            <p className="text-white font-medium text-[16px]">
-            <span className="text-[#915EFF]">@</span>{" "}
-              <a 
-                href={linkedin} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="hover:underline text-[#915EFF]"
-              >
-                {name}
-              </a>
-            </p>
-            <p className="mt-1 text-secondary text-[12px]">
-              {designation} of {company}
-            </p>
+          <div className="mt-7 flex justify-center">
+            <a 
+              href={url} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="bg-[#915EFF] hover:bg-[#7c4dff] text-white px-6 py-3 rounded-lg font-medium transition-colors duration-300 hover:shadow-lg hover:shadow-[#915EFF]/30"
+            >
+              View Certificate
+            </a>
           </div>
-
-          <img
-            src={image}
-            alt={`feedback_by-${name}`}
-            className="w-10 h-10 rounded-full object-cover"
-          />
         </div>
       </div>
     </div>
@@ -81,15 +71,15 @@ const Feedbacks = () => {
     <div className={`mt-12 bg-black-100 rounded-[20px]`}>
       <div className={`bg-tertiary rounded-2xl ${styles.padding} min-h-[300px]`}>
         <div>
-          <p className={styles.sectionSubText}>What others say</p>
-          <h2 className={styles.sectionHeadText}>Testimonials.</h2>
+          <p className={styles.sectionSubText}>Professional Development</p>
+          <h2 className={styles.sectionHeadText}>Certifications.</h2>
         </div>
       </div>
       <div
         className={`-mt-20 pb-14 ${styles.paddingX} grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10  justify-items-center`}
       >
-        {testimonials.map((testimonial, index) => (
-          <FeedbackCard key={testimonial.name} index={index} {...testimonial} />
+        {certifications.map((certification, index) => (
+          <CertificationCard key={certification.name} index={index} {...certification} />
         ))}
       </div>
     </div>

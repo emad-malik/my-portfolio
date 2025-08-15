@@ -116,11 +116,7 @@ const About = () => {
         ref={paragraphRef}
         className="mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]"
       >
-        I’m an AI & ML Engineer who builds intelligent, end-to-end systems
-        that work seamlessly in the background so you can focus on innovation.
-        From real-time data pipelines and distributed ML training to workflow automation,
-        I design solutions that save time, scale effortlessly, and deliver measurable results.
-        Let’s turn your ideas into reality.
+        For much of my life, I believed I had no passion and no purpose. I couldn't have been more wrong because Allah has not created a single thing without a purpose. I entered FAST as a clueless student, drawn only by a vague interest in Data Science. Three years later, that curiosity has grown into a clear vision and deep passion. I thrive on cleaning messy data, building machine learning models, and uncovering insights. My goal is to contribute meaningfully to the field by creating solutions that add real value to people's lives.
       </p>
 
       <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-items-center gap-10">

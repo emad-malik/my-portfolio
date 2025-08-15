@@ -10,9 +10,13 @@ import {
   close,
   css,
   gearXpert,
-  project2,
   project3,
   project1,
+  p1,
+  p2,
+  p3,
+  p5,
+  p6,
   mysql,
   express,
   postgresql,
@@ -31,6 +35,7 @@ import {
   tailwind,
   threejs,
   python, 
+  r,
   cpp, 
   tableau, 
   powerbi, 
@@ -42,6 +47,7 @@ import {
   fastapi, 
   apachespark, 
   apachekafka, 
+  apachehadoop,
   cuML, 
   pytorch, 
   tensorflow, 
@@ -56,8 +62,7 @@ import {
 
 
 import dml from "../assets/company/dml.png";
-import frack from "../assets/company/frack.png";
-import hrms from "../assets/company/hrms.png";
+
 
 export const navLinks = [
 
@@ -78,14 +83,13 @@ export const navLinks = [
 
 const services = [
   {
-    title: "AI & Machine Learning",
+    title: "Machine Learning",
     icon: "uil uil-brain",
     skills: [
-      { name: "TensorFlow", level: 85 },
-      { name: "PyTorch", level: 80 },
       { name: "Scikit-learn", level: 90 },
-      { name: "cuML", level: 80 },
-      { name: "CNNs", level: 80 },
+      { name: "TensorFlow", level: 85 },
+      { name: "PyTorch", level: 85 },
+      { name: "Keras", level: 85 },
     ],
   },
   {
@@ -93,36 +97,33 @@ const services = [
     icon: "uil uil-brackets-curly",
     skills: [
       { name: "Python", level: 95 },
-      { name: "C++", level: 85 },
-      { name: "SQL", level: 90 },
-      { name: "JavaScript", level: 75 },
-      { name: "MongoDB", level: 80 },
+      { name: "R", level: 80 },
+      { name: "C++", level: 90 },
+      { name: "SQL", level: 95 },
+      { name: "MongoDB", level: 90 },
     ],
   },
   {
-    title: "Data Engineering & Cloud",
+    title: "Data Engineering",
     icon: "uil uil-cloud-computing",
     skills: [   
-      { name: "Distributed Computing", level: 90 },
-      { name: "AWS", level: 85 },
-      { name: "GCP", level: 75 },
-      { name: "Apache Spark/PySpark", level: 85 },
-      { name: "Apache Kafka", level: 80 },
+      { name: "Apache Spark", level: 90 },
+      { name: "Apache Kafka", level: 90 },
+      { name: "Apache Hadoop", level: 85 },
+      { name: "SQL", level: 95},
     ],
   },
   {
-    title: "Automation, Frameworks & Visualization",
+    title: "Data Analysis & Visualization",
     icon: "uil uil-server-network",
     skills: [
-      { name: "FastAPI", level: 85 },
-      { name: "Flask", level: 85 },
-      { name: "n8n", level: 90 },
-      { name: "Tableau", level: 80 },
+      { name: "Tableau", level: 85 },
       { name: "Power BI", level: 75 },
+      { name: "Pyplot", level: 85},
+      { name: "Other Py Libraries (EDA, Graphs, etc.)", level: 85},
     ],
   },
 ];
-
 const technologies = [
   {
     name: "python",
@@ -131,6 +132,10 @@ const technologies = [
   {
     name: "cpp",
     icon: cpp,
+  },
+  {
+    name: "R",
+    icon: r,
   },
   {
     name: "HTML 5",
@@ -148,14 +153,7 @@ const technologies = [
     name: "Node JS",
     icon: nodejs,
   },
-  {
-    name: "Express Js",
-    icon: express,
-  },
-  {
-    name: "React JS",
-    icon: reactjs,
-  },
+  
   {
     name: "flask",
     icon: flask,
@@ -164,10 +162,7 @@ const technologies = [
     name: "fastapi",
     icon: fastapi,
   },
-  {
-    name: "n8n",
-    icon: n8n,
-  },
+  
   {
     name: "tensorflow",
     icon: tensorflow,
@@ -189,29 +184,19 @@ const technologies = [
     icon: apachekafka,
   },
   {
+    name: "apachehadoop",
+    icon: apachehadoop,
+  },
+  {
     name: "MySql",
     icon: mysql,
   },
-  {
-    name: "Postgresql",
-    icon: postgresql,
-  },
+  
   {
     name: "MongoDB",
     icon: mongodb,
   },
-  {
-    name: "AWS",
-    icon: aws,
-  },
-  {
-    name: "gcp",
-    icon: gcp,
-  },
-  {
-    name: "Docker",
-    icon: docker,
-  },
+  
   {
     name: "linux",
     icon: linux,
@@ -239,141 +224,161 @@ const experiences = [
     iconBg: "#FFFFFF",
     date: "Feb 2025 - May 2025",
     points: [
-      "Developed an image-processing pipeline to generate orthomosaic maps from raw drone imagery.",
-      "Engineered a KMZ-based mission planner pipeline for automated drone image acquisition.",
-    ],
-  },
-  {
-    title: "AI Intern",
-    company_name: "FRACK Technologies",
-    icon: frack,
-    iconBg: "#FFFFFF",
-    date: "Sep 2024 - Oct 2024",
-    points: [
-      "Assisted in developing and fine-tuning AI models to improve prediction accuracy and task automation.",
-      "Conducted data preprocessing, feature extraction, and model evaluation to support ongoing AI projects.",
-    ],
-  },
-  {
-    title: "Database Intern",
-    company_name: "PrimeHRMS",
-    icon: hrms,
-    iconBg: "#FFFFFF",
-    date: "Jul 2024 - Aug 2024",
-    points: [
-      "Designed and maintained relational databases in MySQL and wrote optimized SQL queries for data extraction.",
-      "Utilized MongoDB to store, retrieve and manage application data for backend operations.",
+      "Created an automated image processing pipeline that converts drone imagery into precise and seamless-blended orthomosaics.",
+      "Developed a KMZ-based mission planner that automates drone flight planning, based on waypoints and flight parameters.",
     ],
   },
 ];
 
-const testimonials = [
-  {
-    testimonial:
-      "Calm under pressure, creative in approach, Haider delivers results every time.",
-    name: "Mahnoor Tariq",
-    designation: "Founder",
-    company: "DMLytics",
-    image: testimonial1,
-    linkedin: "https://www.linkedin.com/in/mahnoor-t-661435221/",
-  },
-  {
-    testimonial:
-      "Haider brought precision, reliability and out-of-the-box thinking to every challenge.",
-    name: "Taimur Hashim",
-    designation: "Product Manager",
-    company: "Frack Technologies",
-    image: testimonial2,
-    linkedin: "https://www.linkedin.com/in/taimur111/",
-  },
-  {
-    testimonial:
-      "Exceptionally committed and hardworking, Haider is a true asset to any team.",
-    name: "Sheikh Haad Ali",
-    designation: "Project Manager",
-    company: "H3 Solution - Prime HRMS",
-    image: testimonial3,
-    linkedin: "https://www.linkedin.com/in/sheikh-haad-ali-2814a8181/",
-  },
+const certifications = [
+  { name: "Data Science Professional Certificate (IBM)", url: "https://www.coursera.org/account/accomplishments/certificate/XW3TZV6F2LK7" },
+  { name: "IT Security (Google)", url: "https://www.coursera.org/account/accomplishments/certificate/GGL4WBHYC672" },
+  { name: "Number Theory and Cryptography (UCS)", url: "https://www.coursera.org/account/accomplishments/certificate/SXZ34UHXES4Z" },
 ];
 
 const projects = [
   {
-    name: "High-Performance Binary Classification",
+    name: "Short-Term Electricity Load Forecasting",
     description:
-      "A scalable ML solution designed to handle large, imbalanced datasets using distributed computing and GPU acceleration. Built with PySpark and hybrid CPU-GPU training, the system leverages cuML Random Forest to achieve a 98% reduction in training time while boosting model accuracy, delivering faster, more efficient predictions for high-volume data environments.",
+      "Developed a preprocessing pipeline which takes in consumption patterns, weather and geographical data. Developed clustering algorithms like KMeans and DBSCAN to understand energy consumption. Implemented time-series forecasting using LSTM, xgBoost, and Ensemble Learning to forecast short-term load based on various features.",
     tags: [
       {
-        name: "pySpark",
+        name: "time-series-forecasting",
         color: "blue-text-gradient",
       },
       {
-        name: "cuML",
+        name: "machine-learning",
         color: "green-text-gradient",
       },
       {
-        name: "GPU Acceleration",
+        name: "lstm",
         color: "pink-text-gradient",
       },
       {
-        name: "Machine Learning",
-        color: "white-text-gradient",
+        name: "clustering",
+        color: "orange-text-gradient",
       },
- 
+    ],
+    image: p1,
+    source_code_link: "https://github.com/emad-malik/Electric-Load-Forecasting-and-Clustering",
+  },
+  {
+    name: "F1 Prediction System",
+    description:
+      "Fetched F1 data from Fast-F1 API and preprocessed it. Built a predictive model to forecast the podium of the upcoming race by analysing historical drivers and race features. Implemented hyperparameter techniques to minimise the error of the regressor boosting model.",
+    tags: [
+      {
+        name: "python",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "api",
+        color: "green-text-gradient",
+      },
+      {
+        name: "prediction",
+        color: "pink-text-gradient",
+      },
+    ],
+    image: p2,
+    source_code_link: "https://github.com/emad-malik/F1-Prediction-Model",
+  },
+  {
+    name: "Music Recommendation Engine",
+    description:
+      "Developed an ETL pipeline to process the FMA dataset, extract features, and store the transformed data in MongoDB. Utilized Spark and MLlib to train music recommendation models using collaborative filtering, refining performance through hyperparameter tuning. Integrated Kafka with Flask to deploy the project.",
+    tags: [
+      {
+        name: "python",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "spark",
+        color: "green-text-gradient",
+      },
+      {
+        name: "kafka",
+        color: "pink-text-gradient",
+      },
+      {
+        name: "mongodb",
+        color: "orange-text-gradient",
+      },
+    ],
+    image: p3,
+    source_code_link: "https://github.com/emad-malik/Music-Recommendation-System-PySpark-Kafka-MongoDB",
+  },
+  {
+    name: "Predictive Analysis of Residential Property",
+    description:
+      "Developed an ETL pipeline to process the Zameen dataset, extract features, and transform the data for prediction. Trained and tuned a regression model to predict property prices in Islamabad based on different features.",
+    tags: [
+      {
+        name: "python",
+        color: "blue-text-gradient",
+      },
+      {
+        name: "etl",
+        color: "green-text-gradient",
+      },
+      {
+        name: "regression",
+        color: "pink-text-gradient",
+      },
     ],
     image: project1,
-    source_code_link: "https://github.com/muhammadhaider02",
+    source_code_link: "https://github.com/emad-malik/Predictive-Analysis-of-Residential-Property",
   },
   {
-    name: "Music Recommendation Streaming Platform",
+    name: "Near Real-Time DataWarehouse",
     description:
-      "A real-time music streaming platform with a built-in recommendation engine, combining distributed technologies with full-stack deployment. Leveraging Apache Kafka and Spark MLlib for collaborative filtering, the system delivers personalized music suggestions instantly through a Flask-based interface, ensuring a seamless and dynamic user experience.",
+      "Developed an ETL pipeline to process customer data using the MeshJoin algorithm and store results in MySQL. Applied OLAP queries on the data in MySQL to gain meaningful insights.",
     tags: [
       {
-        name: "Apache Kafka",
+        name: "python",
         color: "blue-text-gradient",
       },
       {
-        name: "Spark MLlib",
+        name: "etl",
         color: "green-text-gradient",
       },
       {
-        name: "Flask",
+        name: "mysql",
         color: "pink-text-gradient",
       },
       {
-        name: "Machine Learning",
-        color: "white-text-gradient",
+        name: "olap",
+        color: "orange-text-gradient",
       },
     ],
-    image: project2,
-    source_code_link: "https://github.com/muhammadhaider02",
+    image: p5,
+    source_code_link: "https://github.com/emad-malik/Building-and-Analysing-a-Near-Real-Time-Data-Warehouse-Prototype",
   },
   {
-    name: "Electric Load Forecasting System",
+    name: "Pakistan Foreign Remittance Analysis",
     description:
-      "An intelligent forecasting system for predicting electricity demand using advanced time-series models, including LSTM and ARIMA, combined with DBSCAN clustering for consumption pattern analysis. Features a React based interface for dynamic model tuning and interactive data visualization, enabling data-driven decision making in energy management.",
+      "Built machine learning pipeline to forecast monthly remittances per country using historical SBP data. Performed data cleaning including normalization of country names and removal of summary rows. Performed EDA using statistics and graphs to gain insights into remittance flow of the country.",
     tags: [
       {
-        name: "LSTM",
+        name: "python",
         color: "blue-text-gradient",
       },
       {
-        name: "ARIMA",
+        name: "machine-learning",
         color: "green-text-gradient",
       },
       {
-        name: "React",
+        name: "forecasting",
         color: "pink-text-gradient",
       },
       {
-        name: "Data Visualization & Analytics",
-        color: "white-text-gradient",
+        name: "eda",
+        color: "orange-text-gradient",
       },
     ],
-    image: project3,
-    source_code_link: "https://github.com/muhammadhaider02",
+    image: p6,
+    source_code_link: "https://github.com/emad-malik/Pakistan-Foreign-Remittance-Analysis-Forecasting",
   },
 ];
 
-export { services, technologies, experiences, testimonials, projects };
+export { services, technologies, experiences, certifications, projects };

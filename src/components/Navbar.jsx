@@ -44,8 +44,8 @@ const Navbar = () => {
         >
           <img src={logo} alt='logo' className='w-9 h-9 object-contain' />
           <p className='text-white text-[18px] font-bold cursor-pointer flex '>
-            Haider &nbsp;
-            <span className='sm:block hidden'> | AI Engineer</span>
+            Emad &nbsp;
+            <span className='sm:block hidden'> | Data Scientist</span>
           </p>
         </Link>
 

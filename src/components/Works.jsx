@@ -129,11 +129,7 @@ const Works = () => {
 
       <div className="w-full flex">
         <p className="mt-3 text-secondary text-[17px] max-w-3xl leading-[30px]">
-        The following projects showcase my expertise in AI, Machine Learning, and workflow automation through real-world, 
-        high-performance applications. They reflect my ability to engineer scalable ML pipelines, 
-        leverage distributed computing and GPU acceleration, and integrate advanced models into production-ready systems. 
-        From real-time data processing to intelligent automation, 
-        each project is built to deliver measurable results and solve practical challenges.
+          These projects demonstrate my journey from a curious student to a passionate Data Scientist, showcasing my expertise in time-series forecasting, machine learning, and data engineering. From electricity load prediction using LSTM and clustering algorithms to building real-time recommendation systems with Apache Spark and Kafka, each project reflects my hands-on experience with cutting-edge technologies. My work spans across various domains including sports analytics, music recommendation, real estate prediction, and financial forecasting, demonstrating my ability to tackle diverse data challenges and deliver practical, scalable solutions.
         </p>
       </div>
 
