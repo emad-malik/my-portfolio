@@ -545,7 +545,7 @@
       <a href="#home" class="nav-logo">Emad Malik</a>
       <ul class="nav-links">
         <li><a href="#home">Home</a></li>
-        <li><a href="#works">Works</a></li>
+        <li><a href="#works">Projects</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -774,7 +774,7 @@
       <div class="about-grid">
         <div class="about-bio fade-up">
           <p>
-            I'm a Machine Learning Engineer focused on systems thinking and building production-grade systems. It's easy to obsess over a model's accuracy, but the real work lies in targeting actual business metrics and surviving data drift in production. I specialize in the serving side of AI, building robust ETLs and deploying scalable infrastructure using AWS and core MLOps tools. For me, a project is only truly done when it's actively serving users and handling real-world load without breaking. I am a fresh FAST Islamabad graduate with Cum Laude honors, driven by the challenge of turning complex data into reliable systems. Outside the terminal, you'll find me volunteering at underprivileged schools or catching a cricket match.
+            I'm a Machine Learning Engineer focused on systems thinking and building production-grade systems. It's easy to obsess over a model's accuracy, but the real work lies in targeting actual business metrics and surviving data drift in production. I specialize in the serving side of AI, building robust ETLs and deploying scalable infrastructure using AWS and core MLOps tools. For me, a project is only truly done when it's actively serving users and handling real-world load without breaking. I am a fresh FAST Islamabad graduate with Cum Laude honors, driven by the challenge of turning complex data into reliable systems. Outside the terminal, you'll find me watching football, jogging, or occasionally swimming.
           </p>
         </div>
 
@@ -855,7 +855,7 @@
         </div>
 
         <div class="fade-up">
-          <form class="contact-form" onsubmit="handleSubmit(event)">
+          <form class="contact-form" id="contact-form">
             <div class="form-group">
               <label for="name">Name</label>
               <input type="text" id="name" name="name"
@@ -872,6 +872,7 @@
                         placeholder="What's on your mind?"></textarea>
             </div>
             <button type="submit" class="btn-submit">Send Message →</button>
+            <p class="form-status" id="form-status" aria-live="polite"></p>
           </form>
         </div>
       </div>
@@ -887,7 +888,7 @@
   </footer>
 
   <!-- ─── JS ─────────────────────────────────────────────────────── -->
-  <script>
+  <script type="module">
     // Navbar scroll border
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
@@ -921,14 +922,48 @@
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     fadeEls.forEach(el => observer.observe(el));
 
-    // Contact form stub
-    function handleSubmit(e) {
-      e.preventDefault();
-      const btn = e.target.querySelector('.btn-submit');
-      btn.textContent = 'Message sent ✓';
-      btn.style.opacity = '0.6';
-      btn.disabled = true;
-    }
+    const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY ?? '';
+    const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID ?? '';
+    const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID ?? '';
+    const contactForm = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+    const submitButton = contactForm.querySelector('.btn-submit');
+
+    contactForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (
+        !EMAILJS_PUBLIC_KEY ||
+        !EMAILJS_SERVICE_ID ||
+        !EMAILJS_TEMPLATE_ID ||
+        EMAILJS_PUBLIC_KEY.includes('YOUR') ||
+        EMAILJS_SERVICE_ID.includes('YOUR') ||
+        EMAILJS_TEMPLATE_ID.includes('YOUR')
+      ) {
+        formStatus.textContent = 'Add your EmailJS service, template, and public key to enable sending.';
+        return;
+      }
+
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending...';
+      formStatus.textContent = '';
+
+      try {
+        const { default: emailjs } = await import('https://cdn.jsdelivr.net/npm/@emailjs/browser@4/+esm');
+        await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, contactForm, {
+          publicKey: EMAILJS_PUBLIC_KEY,
+        });
+
+        formStatus.textContent = 'Message sent successfully.';
+        contactForm.reset();
+        submitButton.textContent = 'Sent ✓';
+      } catch (error) {
+        console.error(error);
+        formStatus.textContent = 'Message could not be sent. Check your EmailJS setup and try again.';
+        submitButton.disabled = false;
+        submitButton.textContent = 'Send Message →';
+      }
+    });
   </script>
 
 </body>
