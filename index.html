@@ -1,29 +1,935 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/src/assets/logo.png" />
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/line.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emad Malik — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
 
-    <title>Emad's Portfolio</title>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <!-- Open Graph Meta Tags for LinkedIn/Facebook -->
-<meta property="og:title" content="Emad Malik — Data Scientist" />
-<meta property="og:description" content="Passionate Data Scientist with expertise in time-series forecasting, machine learning, and data engineering. Explore my portfolio featuring projects in electricity load prediction, F1 analytics, music recommendation systems, and financial forecasting using cutting-edge technologies like LSTM, Apache Spark, and Kafka." />
-<meta property="og:image" content="https://emadmalik00.vercel.app/thumbnail.png" />
-<meta property="og:url" content="https://emadmalik00.vercel.app/" />
-<meta property="og:type" content="website" />
+    :root {
+      --bg:           #f4f0e8;
+      --ink:          #111111;
+      --ink-mid:      #555555;
+      --ink-soft:     #888888;
+      --border:       #d8d3c8;
+      --pill-bg:      #e8e3d8;
+      --pill-border:  #c8c2b4;
+      --hover-bg:     #ede9e0;
+      --accent-bg:    #eae5d9;
+      --serif:        'DM Serif Display', Georgia, serif;
+      --sans:         'DM Sans', system-ui, sans-serif;
+      --max:          1160px;
+      --pad-x:        clamp(1.5rem, 5vw, 5rem);
+    }
 
-<!-- Twitter Card Meta Tags -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Emad Malik — Data Scientist" />
-<meta name="twitter:description" content="Passionate Data Scientist with expertise in time-series forecasting, machine learning, and data engineering. Explore my portfolio featuring projects in electricity load prediction, F1 analytics, music recommendation systems, and financial forecasting using cutting-edge technologies like LSTM, Apache Spark, and Kafka." />
-<meta name="twitter:image" content="https://emadmalik00.vercel.app/thumbnail.png" />
+    html { scroll-behavior: smooth; }
 
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    input, textarea, button { font-family: inherit; }
+
+    /* ─── Utility ──────────────────────────────────────────────────── */
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--pad-x);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 0.25em 0.75em;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--pill-border);
+      background: var(--pill-bg);
+      border-radius: 100px;
+      color: var(--ink-mid);
+      white-space: nowrap;
+    }
+
+    /* ─── Navbar ───────────────────────────────────────────────────── */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--bg);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    #navbar.scrolled { border-bottom-color: var(--border); }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--ink-mid);
+      letter-spacing: 0.02em;
+      position: relative;
+      padding-bottom: 2px;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--ink);
+      transition: width 0.25s ease;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px; height: 1.5px;
+      background: var(--ink);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      border-top: 1px solid var(--border);
+      padding: 0.5rem 0 1rem;
+    }
+    .mobile-menu a {
+      display: block;
+      padding: 0.7rem var(--pad-x);
+      font-size: 0.95rem;
+      color: var(--ink-mid);
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu.open { display: flex; }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    /* ─── Hero ─────────────────────────────────────────────────────── */
+    #home {
+      padding-top: 60px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-inner {
+      padding: clamp(5rem, 12vw, 9rem) 0 clamp(4rem, 8vw, 7rem);
+    }
+
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(3.4rem, 8.5vw, 7.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      max-width: 14ch;
+      margin-bottom: 2rem;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--ink-mid);
+    }
+
+    .hero-tagline {
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      color: var(--ink-mid);
+      font-weight: 300;
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+    .hero-tags .pill:nth-child(2) { transform: translateY(4px); }
+    .hero-tags .pill:nth-child(3) { transform: translateY(-3px); }
+
+    /* ─── Section shared ───────────────────────────────────────────── */
+    .section {
+      padding: clamp(4rem, 10vw, 8rem) 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 3.5rem;
+    }
+
+    /* ─── Project group label ──────────────────────────────────────── */
+    .project-group-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.75rem;
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .project-group-label:first-of-type { margin-top: 0; }
+    .project-group-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── Works ────────────────────────────────────────────────────── */
+    .project-list { display: flex; flex-direction: column; }
+
+    .project-card {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 1.8rem 1rem;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      transition: background 0.2s;
+      border-radius: 4px;
+      margin: 0 -1rem;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 1rem; right: 1rem;
+      height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s ease;
+    }
+    .project-card:hover { background: var(--hover-bg); }
+    .project-card:hover::before { transform: scaleX(1); }
+    .project-card:first-of-type { border-top: 1px solid var(--border); }
+
+    .project-left { flex: 1; min-width: 0; }
+
+    .project-name {
+      font-size: clamp(1.1rem, 2.5vw, 1.75rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 0.35rem;
+      letter-spacing: -0.01em;
+    }
+
+    .project-desc {
+      font-size: 0.88rem;
+      color: var(--ink-mid);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    .project-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      justify-content: flex-end;
+      flex-shrink: 0;
+      max-width: 240px;
+    }
+
+    .project-arrow {
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+      margin-left: 0.5rem;
+      align-self: center;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+
+    .project-arrow.github {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+
+    .project-arrow.github svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      fill: currentColor;
+    }
+    .project-card:hover .project-arrow { transform: translate(3px, -3px); }
+
+    /* highlight card variant */
+    .project-card.highlight { background: var(--accent-bg); }
+    .project-card.highlight:hover { background: var(--hover-bg); }
+    .pill.live {
+      background: #d4edda;
+      border-color: #a8d5b5;
+      color: #2d6a3f;
+    }
+
+    @media (max-width: 580px) {
+      .project-card { flex-direction: column; gap: 0.8rem; }
+      .project-right { justify-content: flex-start; max-width: 100%; }
+    }
+
+    /* ─── About ────────────────────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: start;
+    }
+
+    .about-bio p {
+      font-size: 1.05rem;
+      color: var(--ink-mid);
+      font-weight: 300;
+      line-height: 1.75;
+      margin-bottom: 1.25rem;
+    }
+    .about-bio p:last-child { margin-bottom: 0; }
+    .about-bio strong { color: var(--ink); font-weight: 500; }
+
+    .skills-heading {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.01em;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .timeline { border-top: 1px solid var(--border); }
+
+    .timeline-item {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.88rem;
+    }
+
+    .timeline-year {
+      color: var(--ink-soft);
+      font-weight: 300;
+      white-space: nowrap;
+      min-width: 90px;
+      flex-shrink: 0;
+    }
+
+    .timeline-role { color: var(--ink-mid); }
+    .timeline-role strong { color: var(--ink); font-weight: 500; }
+
+    @media (max-width: 720px) {
+      .about-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Contact ──────────────────────────────────────────────────── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: start;
+    }
+
+    .contact-heading {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+    }
+
+    .contact-email {
+      display: inline-block;
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--ink);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      margin-bottom: 1.8rem;
+      transition: border-color 0.2s;
+    }
+    .contact-email:hover { border-color: var(--ink); }
+
+    .social-links {
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      position: relative;
+      padding-bottom: 2px;
+    }
+    .social-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--ink);
+      transition: width 0.25s;
+    }
+    .social-link:hover { color: var(--ink); }
+    .social-link:hover::after { width: 100%; }
+
+    .btn-resume {
+      display: inline-block;
+      padding: 0.7rem 1.6rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      border-radius: 100px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-resume:hover { background: var(--ink); color: var(--bg); }
+
+    .contact-form { display: flex; flex-direction: column; gap: 1.1rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .form-group label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      padding: 0.55rem 0;
+      font-size: 0.95rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+      width: 100%;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-bottom-color: var(--ink); }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--ink-soft); }
+    .form-group textarea { min-height: 100px; }
+
+    .btn-submit {
+      align-self: flex-start;
+      margin-top: 0.5rem;
+      padding: 0.75rem 2rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--ink);
+      color: var(--bg);
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-submit:hover { opacity: 0.75; }
+
+    @media (max-width: 720px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Footer ───────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* ─── Fade-in ──────────────────────────────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade-up { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ─── Navbar ─────────────────────────────────────────────────── -->
+  <nav id="navbar">
+    <div class="container nav-inner">
+      <a href="#home" class="nav-logo">Emad Malik</a>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#works">Works</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#home"    onclick="closeMobileMenu()">Home</a>
+      <a href="#works"   onclick="closeMobileMenu()">Works</a>
+      <a href="#about"   onclick="closeMobileMenu()">About</a>
+      <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ─── Hero ───────────────────────────────────────────────────── -->
+  <section id="home">
+    <div class="container hero-inner">
+      <h1 class="hero-headline fade-up">
+        ML pipelines that <em>actually</em> ship.
+      </h1>
+      <p class="hero-tagline fade-up">
+        Machine learning engineer building production-grade MLOps systems end to end.
+      </p>
+      <div class="hero-tags fade-up">
+        <span class="pill">machine learning</span>
+        <span class="pill">mlops</span>
+        <span class="pill">data engineering</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Works ──────────────────────────────────────────────────── -->
+  <section id="works" class="section">
+    <div class="container">
+      <p class="section-label fade-up">Selected Projects</p>
+
+      <!-- ── Highlight Projects ── -->
+      <div class="project-group-label fade-up">Highlights</div>
+      <div class="project-list">
+
+        <!-- v2 JobSwipe -->
+        <div class="project-card highlight fade-up">
+          <div class="project-left">
+            <h2 class="project-name">v2 JobSwipe — AI Career Platform</h2>
+            <p class="project-desc">
+              Multi-agent AI platform with a Tinder-style swipe UI: upload your résumé,
+              get role recommendations, identify skill gaps, and auto-apply — all orchestrated
+              by four LangGraph agents with FAISS semantic job matching.
+            </p>
+          </div>
+          <div class="project-right">
+            <a class="pill live" href="https://jobswipe.works" target="_blank" rel="noopener noreferrer">Live ↗</a>
+            <span class="pill">Python</span>
+            <span class="pill">LangGraph</span>
+            <span class="pill">Next.js</span>
+            <span class="pill">FAISS</span>
+            <span class="pill">Flask</span>
+            <span class="pill">Supabase</span>
+          </div>
+          <a class="project-arrow github" href="https://github.com/muhammadhaider02/v2-JobSwipe" target="_blank" rel="noopener noreferrer" aria-label="Open v2 JobSwipe on GitHub">
+            <svg viewBox="0 0 16 16" role="img" aria-label="GitHub icon">
+              <path d="M8 0.5a7.5 7.5 0 0 0-2.37 14.62c.38.07.52-.17.52-.38v-1.32c-2.12.46-2.57-1.02-2.57-1.02-.35-.9-.85-1.14-.85-1.14-.7-.48.05-.47.05-.47.77.06 1.18.79 1.18.79.69 1.17 1.81.83 2.26.63.07-.5.27-.83.49-1.02-1.7-.19-3.49-.85-3.49-3.79 0-.84.3-1.53.79-2.07-.08-.19-.34-.96.08-2 0 0 .64-.2 2.1.79a7.27 7.27 0 0 1 3.82 0c1.46-.99 2.1-.79 2.1-.79.42 1.04.16 1.81.08 2 .49.54.79 1.23.79 2.07 0 2.95-1.79 3.6-3.5 3.79.28.24.53.72.53 1.45v2.15c0 .21.14.46.53.38A7.5 7.5 0 0 0 8 0.5Z"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- JobSwipe Scraper Dashboard -->
+        <div class="project-card highlight fade-up">
+          <div class="project-left">
+            <h2 class="project-name">JobSwipe — Job Board Scraper & Dashboard</h2>
+            <p class="project-desc">
+              Daily scraper pulling 1,000+ listings across LinkedIn, Indeed, Rozee & Mustakbil,
+              with Redis deduplication, GitHub Actions scheduling, and a Next.js dashboard
+              for browsing and filtering all jobs in real time.
+            </p>
+          </div>
+          <div class="project-right">
+            <a class="pill live" href="https://jobswipe.cloud" target="_blank" rel="noopener noreferrer">Live ↗</a>
+            <span class="pill">Python</span>
+            <span class="pill">Scrapling</span>
+            <span class="pill">Next.js</span>
+            <span class="pill">Supabase</span>
+            <span class="pill">Redis</span>
+            <span class="pill">GitHub Actions</span>
+          </div>
+          <a class="project-arrow github" href="https://github.com/emad-malik/Scrapling-Job-Boards-Scrapper" target="_blank" rel="noopener noreferrer" aria-label="Open JobSwipe scraper on GitHub">
+            <svg viewBox="0 0 16 16" role="img" aria-label="GitHub icon">
+              <path d="M8 0.5a7.5 7.5 0 0 0-2.37 14.62c.38.07.52-.17.52-.38v-1.32c-2.12.46-2.57-1.02-2.57-1.02-.35-.9-.85-1.14-.85-1.14-.7-.48.05-.47.05-.47.77.06 1.18.79 1.18.79.69 1.17 1.81.83 2.26.63.07-.5.27-.83.49-1.02-1.7-.19-3.49-.85-3.49-3.79 0-.84.3-1.53.79-2.07-.08-.19-.34-.96.08-2 0 0 .64-.2 2.1.79a7.27 7.27 0 0 1 3.82 0c1.46-.99 2.1-.79 2.1-.79.42 1.04.16 1.81.08 2 .49.54.79 1.23.79 2.07 0 2.95-1.79 3.6-3.5 3.79.28.24.53.72.53 1.45v2.15c0 .21.14.46.53.38A7.5 7.5 0 0 0 8 0.5Z"/>
+            </svg>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- ── ML / MLOps Projects ── -->
+      <div class="project-group-label fade-up">ML & MLOps</div>
+      <div class="project-list">
+
+        <!-- Telecom Churn -->
+        <a href="https://github.com/emad-malik/Customer-Churn-Prediction"
+           class="project-card fade-up"
+           target="_blank" rel="noopener">
+          <div class="project-left">
+            <h2 class="project-name">Telecom Churn MLOps Pipeline</h2>
+            <p class="project-desc">
+              Seven-model benchmark (XGBoost, LightGBM, Stacking Ensemble, and more) with
+              MLflow experiment tracking, FastAPI serving, Prometheus metrics, Grafana
+              dashboards, and a drift simulation workflow — all containerised with Docker Compose.
+            </p>
+          </div>
+          <div class="project-right">
+            <span class="pill">Python</span>
+            <span class="pill">MLflow</span>
+            <span class="pill">FastAPI</span>
+            <span class="pill">Docker</span>
+            <span class="pill">XGBoost</span>
+            <span class="pill">Prometheus</span>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+        <!-- Breast Cancer Kubeflow -->
+        <a href="https://github.com/emad-malik/Breast-Cancer-Dataset-Kubeflow-Pipeline"
+           class="project-card fade-up"
+           target="_blank" rel="noopener">
+          <div class="project-left">
+            <h2 class="project-name">Breast Cancer Detection — Kubeflow ML Pipeline</h2>
+            <p class="project-desc">
+              End-to-end classification pipeline on Kubeflow Pipelines running on a local
+              Kubernetes (Minikube) cluster, featuring Genetic Algorithm–tuned SVM (98.25%
+              accuracy, 99.60% AUC-ROC) and Particle Swarm Optimization–tuned Neural Networks
+              across four parameterised pipeline versions.
+            </p>
+          </div>
+          <div class="project-right">
+            <span class="pill">Python</span>
+            <span class="pill">Kubeflow</span>
+            <span class="pill">Kubernetes</span>
+            <span class="pill">scikit-learn</span>
+            <span class="pill">DEAP</span>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+        <!-- Music Recommendation -->
+        <a href="https://github.com/emad-malik/FMA-MusicRecommendationEngine-Databricks-MLflow-Spark-Kafka"
+           class="project-card fade-up"
+           target="_blank" rel="noopener">
+          <div class="project-left">
+            <h2 class="project-name">FMA Music Recommendation Engine</h2>
+            <p class="project-desc">
+              KMeans clustering on 15 audio features (MFCC, tempo, spectral centroid) via
+              Databricks medallion architecture (bronze→silver→gold), with real-time Kafka
+              streaming, MLflow model registry, and a Flask UI backed by AWS S3 and the
+              Databricks SQL Connector.
+            </p>
+          </div>
+          <div class="project-right">
+            <span class="pill">Python</span>
+            <span class="pill">Databricks</span>
+            <span class="pill">Apache Spark</span>
+            <span class="pill">Kafka</span>
+            <span class="pill">MLflow</span>
+            <span class="pill">Flask</span>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+        <!-- Drift-Aware Fare Predictor -->
+        <a href="https://github.com/emad-malik/Automated-Drift-Aware-Fare-Predictor-Docker-MLflow-Airflow"
+           class="project-card fade-up"
+           target="_blank" rel="noopener">
+          <div class="project-left">
+            <h2 class="project-name">Automated Drift-Aware Fare Predictor</h2>
+            <p class="project-desc">
+              Production MLOps pipeline for NYC taxi fare prediction with automated monthly
+              data ingestion via Airflow, PSI-based statistical drift detection, Champion vs
+              Challenger model promotion, and a LightGBM model served as a REST API —
+              fully containerised.
+            </p>
+          </div>
+          <div class="project-right">
+            <span class="pill">Python</span>
+            <span class="pill">Airflow</span>
+            <span class="pill">MLflow</span>
+            <span class="pill">Docker</span>
+            <span class="pill">LightGBM</span>
+            <span class="pill">PostgreSQL</span>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+        <!-- Short-Term Load Forecasting -->
+        <a href="https://github.com/emad-malik/Short-Term-Load-Forecasting-EndtoEnd-MLops-Pipeline"
+           class="project-card fade-up"
+           target="_blank" rel="noopener">
+          <div class="project-left">
+            <h2 class="project-name">Short-Term Load Forecasting — End-to-End MLOps</h2>
+            <p class="project-desc">
+              Energy demand forecasting with XGBoost trained on 1.3M rows of EIA930 data,
+              deployed via FastAPI on AWS App Runner with a CI/CD pipeline through GitHub
+              Actions and Docker — from raw multi-source ETL to a live prediction dashboard.
+            </p>
+          </div>
+          <div class="project-right">
+            <span class="pill">Python</span>
+            <span class="pill">XGBoost</span>
+            <span class="pill">FastAPI</span>
+            <span class="pill">Docker</span>
+            <span class="pill">AWS App Runner</span>
+            <span class="pill">GitHub Actions</span>
+          </div>
+          <span class="project-arrow">↗</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── About ──────────────────────────────────────────────────── -->
+  <section id="about" class="section">
+    <div class="container">
+      <p class="section-label fade-up">About</p>
+
+      <div class="about-grid">
+        <div class="about-bio fade-up">
+          <p>
+            I'm a Machine Learning Engineer focused on systems thinking and building production-grade systems. It's easy to obsess over a model's accuracy, but the real work lies in targeting actual business metrics and surviving data drift in production. I specialize in the serving side of AI, building robust ETLs and deploying scalable infrastructure using AWS and core MLOps tools. For me, a project is only truly done when it's actively serving users and handling real-world load without breaking. I am a fresh FAST Islamabad graduate with Cum Laude honors, driven by the challenge of turning complex data into reliable systems. Outside the terminal, you'll find me volunteering at underprivileged schools or catching a cricket match.
+          </p>
+        </div>
+
+        <div class="about-right fade-up">
+          <p class="skills-heading">I've got hands-on experience with…</p>
+          <div class="skills-list">
+            <span class="pill">Python (Pandas, NumPy, Scikit-learn, OpenCV, Pytorch, Tensorflow)</span>
+            <span class="pill">AWS</span>
+            <span class="pill">Apache Airflow</span>
+            <span class="pill">Apache Kafka</span>
+            <span class="pill">Apache Spark</span>
+            <span class="pill">Apache Hadoop</span>
+            <span class="pill">MLflow</span>
+            <span class="pill">Kubeflow</span>
+            <span class="pill">Docker</span>
+            <span class="pill">FastAPI</span>
+            <span class="pill">PostgreSQL</span>
+            <span class="pill">Databricks</span>
+            <span class="pill">Snowflake</span>
+            <span class="pill">CI/CD Pipeline</span>
+            <span class="pill">Tableau Prep and Tableau Desktop</span>
+            <span class="pill">d3.js</span>
+            <span class="pill">C/C++</span>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <span class="timeline-year">2026 – Present</span>
+              <span class="timeline-role">
+                <strong>AI Software Engineer Intern</strong> @ Dafinitiq AI
+                <br><span style="font-size:0.82rem; color:var(--ink-soft)">Python · Large Language Models · Voice AI Agent · STT · TTS</span>
+              </span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-year">2026 – Present</span>
+              <span class="timeline-role">
+                <strong>Database Development Intern</strong> @ Inzent
+                <br><span style="font-size:0.82rem; color:var(--ink-soft)">Oracle · PostgreSQL · C · OCL · ODBC</span>
+              </span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-year">Aug 2023 – May 2026</span>
+              <span class="timeline-role">
+                <strong>Teaching Assistant</strong> @ FAST Islamabad
+                <br><span style="font-size:0.82rem; color:var(--ink-soft)">Parallel and Distributed Computing, Operating Systems, Data Analysis, Fundamentals of Software Engineering, Discrete Structures · 100+ students/semester</span>
+              </span>
+            </div>
+            <div class="timeline-item">
+              <span class="timeline-year">Feb 2025 – May 2025</span>
+              <span class="timeline-role">
+                <strong>AI Engineer</strong> @ DMLYTICS
+                <br><span style="font-size:0.82rem; color:var(--ink-soft)">Orthomosaic pipeline · OpenCV · GDAL · Precision agriculture</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Contact ─────────────────────────────────────────────────── -->
+  <section id="contact" class="section">
+    <div class="container">
+      <p class="section-label fade-up">Contact</p>
+
+      <div class="contact-grid">
+        <div class="fade-up">
+          <h2 class="contact-heading">Reach out!</h2>
+
+          <a href="mailto:[emaadmalik22@gmail.com]" class="contact-email">[emaadmalik22@gmail.com]</a>
+
+          <div class="social-links">
+            <a href="https://www.linkedin.com/in/malik-emad/"
+               class="social-link" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="https://github.com/emad-malik"
+               class="social-link" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+
+        <div class="fade-up">
+          <form class="contact-form" onsubmit="handleSubmit(event)">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name"
+                     placeholder="Your name" autocomplete="name" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email"
+                     placeholder="your@email.com" autocomplete="email" />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message"
+                        placeholder="What's on your mind?"></textarea>
+            </div>
+            <button type="submit" class="btn-submit">Send Message →</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2026 Emad Malik</span>
+      <span>Let's build something cool together.</span>
+    </div>
+  </footer>
+
+  <!-- ─── JS ─────────────────────────────────────────────────────── -->
+  <script>
+    // Navbar scroll border
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      const open = hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open', open);
+    });
+    function closeMobileMenu() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+
+    // Scroll fade-in with per-sibling stagger
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const siblings = [...entry.target.parentElement
+            .querySelectorAll('.fade-up:not(.visible)')];
+          const idx = siblings.indexOf(entry.target);
+          setTimeout(() => entry.target.classList.add('visible'), idx * 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    fadeEls.forEach(el => observer.observe(el));
+
+    // Contact form stub
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.btn-submit');
+      btn.textContent = 'Message sent ✓';
+      btn.style.opacity = '0.6';
+      btn.disabled = true;
+    }
+  </script>
+
+</body>
 </html>
